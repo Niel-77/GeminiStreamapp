@@ -7,6 +7,7 @@ dependencies:
   - chromadb
   - pypdf
   - tiktoken
+  - pyautogen
   - pyautogen[gemini]
   - pyautogen[gemini,retrievechat,lmm]
   - pillow
