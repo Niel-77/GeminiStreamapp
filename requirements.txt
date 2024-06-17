@@ -1,6 +1,10 @@
 streamlit
 os
 zipfile
-autogen
+chromadb
+pypdf
+tiktoken
+pyautogen[gemini]
+pyautogen[gemini,retrievechat,lmm]
 PIL
 shutil
