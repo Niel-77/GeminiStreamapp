@@ -1,7 +1,6 @@
 import os
 import zipfile
 from PIL import Image
-from dotenv import load_dotenv
 import streamlit as st
 from autogen import AssistantAgent, UserProxyAgent
 from fenics import *
