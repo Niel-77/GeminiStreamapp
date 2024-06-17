@@ -1,5 +1,4 @@
 streamlit
-os
 zipfile
 chromadb
 pypdf
