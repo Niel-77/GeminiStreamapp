@@ -1,1 +1,2 @@
---no-install-recommends -y fenics
+software-properties-common
+fenics
