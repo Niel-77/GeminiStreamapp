@@ -5,4 +5,3 @@ tiktoken
 pyautogen[gemini]
 pyautogen[gemini,retrievechat,lmm]
 pillow
-shutil
