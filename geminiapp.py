@@ -3,7 +3,7 @@ import zipfile
 from PIL import Image
 import streamlit as st
 from autogen import AssistantAgent, UserProxyAgent
-from fenics import *
+#from fenics import *
 import shutil
 
 if "folder_removed" not in st.session_state:
