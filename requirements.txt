@@ -1,9 +1,8 @@
 streamlit
-zipfile
 chromadb
 pypdf
 tiktoken
 pyautogen[gemini]
 pyautogen[gemini,retrievechat,lmm]
-PIL
+pillow
 shutil
