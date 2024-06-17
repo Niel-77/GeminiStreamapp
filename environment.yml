@@ -1,0 +1,12 @@
+name: streamlit-conda-minimal
+channels:
+  - conda-forge
+dependencies:
+  - fenics
+  - streamlit
+  - chromadb
+  - pypdf
+  - tiktoken
+  - pyautogen[gemini]
+  - pyautogen[gemini,retrievechat,lmm]
+  - pillow
