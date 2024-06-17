@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# Add FEniCS repository
-sudo add-apt-repository ppa:fenics-packages/fenics -y
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Update package lists
 sudo apt-get update
 
-# Install FEniCS
-sudo apt-get install fenics -y
+# Install FEniCS without recommended packages
+sudo apt-get install --no-install-recommends -y fenics
+
+# Verify FEniCS installation
+fenics-version
