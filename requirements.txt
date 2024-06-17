@@ -1,0 +1,6 @@
+streamlit
+os
+zipfile
+autogen
+PIL
+shutl
