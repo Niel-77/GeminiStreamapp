@@ -1,1 +1,1 @@
-# SOlve mechanical problem using Gemini agent# GeminiStreamapp
+# Solve mechanical problem using Gemini agent# GeminiStreamapp
