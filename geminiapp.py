@@ -1,10 +1,3 @@
-import os
-import zipfile
-from PIL import Image
-import streamlit as st
-from autogen import AssistantAgent, UserProxyAgent
-from fenics import *
-import shutil
 import subprocess
 
 # Function to install packages from requirements.txt
@@ -16,6 +9,15 @@ def install_packages_from_file(filename):
                 subprocess.run(['pip', 'install', package])
 requirements_file = 'requirements.txt'  # Adjust the filename if it's different
 install_packages_from_file(requirements_file)
+
+import os
+import zipfile
+from PIL import Image
+import streamlit as st
+from autogen import AssistantAgent, UserProxyAgent
+from fenics import *
+import shutil
+
 
 if "folder_removed" not in st.session_state:
     folder_path = "Mechanics"
