@@ -178,3 +178,9 @@ websockets==12.0
 wheel==0.43.0
 wrapt==1.16.0
 zipp==3.19.2
+streamlit
+chromadb
+pypdf
+tiktoken
+pyautogen[gemini]
+pyautogen[gemini,retrievechat,lmm]
