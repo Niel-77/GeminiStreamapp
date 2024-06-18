@@ -4,8 +4,6 @@ from PIL import Image
 import streamlit as st
 from autogen import AssistantAgent, UserProxyAgent
 from fenics import *
-
-# Load environment variables from .env file
 import shutil
 
 if "folder_removed" not in st.session_state:
