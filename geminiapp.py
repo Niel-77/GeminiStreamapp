@@ -1,15 +1,12 @@
 import subprocess
 
-# Function to install packages from requirements.txt
-def install_packages_from_file(filename):
-    with open(filename, 'r') as file:
-        for line in file:
-            package = line.strip()  # Remove any leading/trailing whitespace and newlines
-            if package and not package.startswith('#'):  # Skip empty lines and comments
-                subprocess.run(['pip', 'install', package])
-requirements_file = 'requirements.txt'  # Adjust the filename if it's different
-install_packages_from_file(requirements_file)
-
+def print_conda_version():
+    try:
+        result = subprocess.run(["conda", "--version"], capture_output=True, text=True, check=True)
+        print("Conda version:", result.stdout.strip())
+    except subprocess.CalledProcessError as e:
+        print("Error:", e)
+        print("Conda is not running or not found.")
 import os
 import zipfile
 from PIL import Image
@@ -17,7 +14,6 @@ import streamlit as st
 from autogen import AssistantAgent, UserProxyAgent
 from fenics import *
 import shutil
-
 
 if "folder_removed" not in st.session_state:
     folder_path = "Mechanics"
