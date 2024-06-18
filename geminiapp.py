@@ -5,6 +5,17 @@ import streamlit as st
 from autogen import AssistantAgent, UserProxyAgent
 from fenics import *
 import shutil
+import subprocess
+
+# Function to install packages from requirements.txt
+def install_packages_from_file(filename):
+    with open(filename, 'r') as file:
+        for line in file:
+            package = line.strip()  # Remove any leading/trailing whitespace and newlines
+            if package and not package.startswith('#'):  # Skip empty lines and comments
+                subprocess.run(['pip', 'install', package])
+requirements_file = 'requirements.txt'  # Adjust the filename if it's different
+install_packages_from_file(requirements_file)
 
 if "folder_removed" not in st.session_state:
     folder_path = "Mechanics"
