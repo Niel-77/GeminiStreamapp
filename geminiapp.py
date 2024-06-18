@@ -47,7 +47,7 @@ engineer = AssistantAgent(
         Try to provide visual output whenever possible. Images are preferred.
         Remember that you cannot view files that need to be viewed outside VSCode.
         
-        Here is an example code snippet using FeniCS:
+        Here is an example code snippet using FeniCS for displacement contour:
         import os
         from fenics import *
         import matplotlib.pyplot as plt
@@ -102,6 +102,55 @@ engineer = AssistantAgent(
 
         # Save plot to PNG file
         plt.savefig(os.path.join(".", "displacement.png"))
+
+        Similary here is an example code for plotting temperature distribution.
+        import matplotlib.pyplot as plt
+from dolfin import *
+
+# Define the problem domain and mesh
+L = 1.0  # length of the plate in meters
+H = 1.0  # height of the plate in meters
+mesh = RectangleMesh(Point(0, 0), Point(L, H), 50, 50)
+
+# Define function space
+V = FunctionSpace(mesh, "P", 1)
+
+# Define boundary conditions
+T_hot = Constant(180.0)
+T_cold = Constant(30.0)
+h = Constant(30.0)
+k = Constant(45.0)
+
+# Define boundary conditions
+def left_boundary(x, on_boundary):
+    return on_boundary and near(x[0], 0)
+
+bc = DirichletBC(V, T_hot, left_boundary)
+
+# Define variational problem
+T = TrialFunction(V)
+v = TestFunction(V)
+a = k * dot(grad(T), grad(v)) * dx
+L = Constant(0.0) * v * dx
+
+# Define convective boundary condition on other sides
+ds = Measure('ds', domain=mesh)
+a += h * T * v * ds
+L += h * T_cold * v * ds
+
+# Solve the PDE
+T_solution = Function(V)
+solve(a == L, T_solution, bc)
+
+# Plot the temperature distribution and save as PNG
+plt.figure()
+c = plot(T_solution)
+plt.colorbar(c)  # Pass the plot object to colorbar
+plt.title("Temperature Distribution in the Steel Plate")
+plt.xlabel("X (m)")
+plt.ylabel("Y (m)")
+plt.savefig("temperature_distribution.png")
+plt.show()
         ''',
     llm_config=gemini_config,
     human_input_mode="NEVER",
