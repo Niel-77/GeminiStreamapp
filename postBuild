@@ -1,4 +1,0 @@
-#!/bin/bash
-conda env create -f environment.yml
-echo "source activate fenicsproject" >> ~/.bashrc
-source ~/.bashrc

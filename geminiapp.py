@@ -27,7 +27,7 @@ def zip_folder(folder_path, zip_path):
 config_list_gemini = [
     {
         "model": "gemini-pro",
-        "api_key": "AIzaSyALmiez6Rap7oJP9j5i4aMewKm9PvyezXQ",  # Replace with your API key variable
+        "api_key": "AIzaSyCXePWlauO05sNcaWyl9jqPa3WKUHbTb6Y",  # Replace with your API key variable
         "api_type": "google",
     }
 ]
@@ -43,11 +43,12 @@ gemini_config = {
 engineer = AssistantAgent(
     "Engineer",
     system_message='''You are an engineer and you write codes in Python to solve mechanical problems.
-        You can use either FeniCS or SfePy packages to solve the problem as needed.
+        You can use either FeniCS to solve the problem as needed.
         Try to provide visual output whenever possible. Images are preferred.
         Remember that you cannot view files that need to be viewed outside VSCode.
         
         Here is an example code snippet using FeniCS for displacement contour:
+
         import os
         from fenics import *
         import matplotlib.pyplot as plt
@@ -98,59 +99,60 @@ engineer = AssistantAgent(
         vtkfile << u
 
         # Plot solution
-        plot(u, title='Displacement', mode='displacement')
+        plot(u, title='Displacement', mode='displacement',cmap="rainbow")
 
         # Save plot to PNG file
         plt.savefig(os.path.join(".", "displacement.png"))
 
         Similary here is an example code for plotting temperature distribution.
+        import os
         import matplotlib.pyplot as plt
-from dolfin import *
+        from dolfin import *
 
-# Define the problem domain and mesh
-L = 1.0  # length of the plate in meters
-H = 1.0  # height of the plate in meters
-mesh = RectangleMesh(Point(0, 0), Point(L, H), 50, 50)
+        # Define the problem domain and mesh
+        L = 1.0  # length of the plate in meters
+        H = 1.0  # height of the plate in meters
+        mesh = RectangleMesh(Point(0, 0), Point(L, H), 50, 50)
 
-# Define function space
-V = FunctionSpace(mesh, "P", 1)
+        # Define function space
+        V = FunctionSpace(mesh, "P", 1)
 
-# Define boundary conditions
-T_hot = Constant(180.0)
-T_cold = Constant(30.0)
-h = Constant(30.0)
-k = Constant(45.0)
+        # Define boundary conditions
+        T_hot = Constant(180.0)
+        T_cold = Constant(30.0)
+        h = Constant(30.0)
+        k = Constant(45.0)
 
-# Define boundary conditions
-def left_boundary(x, on_boundary):
-    return on_boundary and near(x[0], 0)
+        # Define boundary conditions
+        def left_boundary(x, on_boundary):
+        return on_boundary and near(x[0], 0)
 
-bc = DirichletBC(V, T_hot, left_boundary)
+        bc = DirichletBC(V, T_hot, left_boundary)
 
-# Define variational problem
-T = TrialFunction(V)
-v = TestFunction(V)
-a = k * dot(grad(T), grad(v)) * dx
-L = Constant(0.0) * v * dx
+        # Define variational problem
+        T = TrialFunction(V)
+        v = TestFunction(V)
+        a = k * dot(grad(T), grad(v)) * dx
+        L = Constant(0.0) * v * dx
 
-# Define convective boundary condition on other sides
-ds = Measure('ds', domain=mesh)
-a += h * T * v * ds
-L += h * T_cold * v * ds
+        # Define convective boundary condition on other sides
+        ds = Measure('ds', domain=mesh)
+        a += h * T * v * ds
+        L += h * T_cold * v * ds
 
-# Solve the PDE
-T_solution = Function(V)
-solve(a == L, T_solution, bc)
+        # Solve the PDE
+        T_solution = Function(V)
+        solve(a == L, T_solution, bc)
 
-# Plot the temperature distribution and save as PNG
-plt.figure()
-c = plot(T_solution)
-plt.colorbar(c)  # Pass the plot object to colorbar
-plt.title("Temperature Distribution in the Steel Plate")
-plt.xlabel("X (m)")
-plt.ylabel("Y (m)")
-plt.savefig("temperature_distribution.png")
-plt.show()
+        # Plot the temperature distribution and save as PNG
+        plt.figure()
+        c = plot(T_solution,cmap="rainbow")
+        plt.colorbar(c)  # Pass the plot object to colorbar
+        plt.title("Temperature Distribution in the Steel Plate")
+        plt.xlabel("X (m)")
+        plt.ylabel("Y (m)")
+        plt.savefig(os.path.join(".", "temperature_distribution.png"))
+        plt.show()
         ''',
     llm_config=gemini_config,
     human_input_mode="NEVER",
@@ -199,9 +201,9 @@ for chat_history in st.session_state["results"]:
         if i == 0:
             continue  # Skip the first system message
         if message["role"] == "assistant":
-            st.text_area(f"Assistant", value=message["content"], height=200, key=f"assistant_{i}")
+            st.text_area(f"User_proxy to engineer", value=message["content"], height=200, key=f"assistant_{i}")
         elif message["role"] == "user":
-            st.text_area(f"User", value=message["content"], height=200, key=f"user_{i}")
+            st.text_area(f"Engineer to User_proxy", value=message["content"], height=200, key=f"user_{i}")
 
 # Display the output images
 st.title("Output")
@@ -232,9 +234,9 @@ for chat_history in st.session_state["results2"]:
         if i == 0:
             continue  # Skip the first system message
         if message["role"] == "assistant":
-            st.text_area(f"Assistant Followup", value=message["content"], height=200, key=f"assistant_followup_{i}")
+            st.text_area(f"User_proxy to Engineer Followup", value=message["content"], height=200, key=f"assistant_followup_{i}")
         elif message["role"] == "user":
-            st.text_area(f"User Followup", value=message["content"], height=200, key=f"user_followup_{i}")
+            st.text_area(f"Engineer to user_proxy Followup", value=message["content"], height=200, key=f"user_followup_{i}")
 
 st.title("Follow Up Output")
 for file in st.session_state["images2"]:
