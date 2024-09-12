@@ -11,9 +11,26 @@ if "folder_removed" not in st.session_state:
     if os.path.exists(folder_path):
         shutil.rmtree(folder_path)
     st.session_state["folder_removed"] = True
-    
+
+MODEL_LIST = ["gemini-pro","gpt-3.5-turbo", "gpt-4","Claude_AI","Ollama"]
 # Initialize Streamlit app
 st.title("Mechanical Problem Solver with LLMs")
+with st.sidebar:
+        st.title('🛠️💬 Mechanical Agents')
+        st.markdown(
+            "## Select your LLM model before asking any question related to Mechanical and Aerospace Engineering."
+        )
+        model: str = st.selectbox("Model", options=MODEL_LIST) 
+
+        api_key_input = st.text_input(
+            "Your model API Key",
+            type="password",
+            placeholder="Paste your API key here",
+            help="You can get your API key from the models' respective website.",  # noqa: E501
+            value=os.environ.get("Model API KEY", None)
+            or st.session_state.get("Model API KEY", ""),
+        )
+
 
 # Function to zip the Mechanics folder
 def zip_folder(folder_path, zip_path):
@@ -26,8 +43,8 @@ def zip_folder(folder_path, zip_path):
 # Define the assistant agent and user proxy agent
 config_list_gemini = [
     {
-        "model": "gemini-pro",
-        "api_key": "AIzaSyCXePWlauO05sNcaWyl9jqPa3WKUHbTb6Y",  # Replace with your API key variable
+        "model": model,
+        "api_key": api_key_input,  # Replace with your API key variable
         "api_type": "google",
     }
 ]
@@ -42,8 +59,10 @@ gemini_config = {
 
 engineer = AssistantAgent(
     "Engineer",
-    system_message='''You are an engineer and you write codes in Python to solve mechanical problems.
-        You can use either FeniCS to solve the problem as needed.
+    system_message='''You are a mechanical engineer expert and you write codes in Python to solve mechanical problems. 
+        You can try to solve the problems all on your own or
+        use open source library as well. For example,
+        you can use either FeniCS to solve the problem as needed. 
         Try to provide visual output whenever possible. Images are preferred.
         Remember that you cannot view files that need to be viewed outside VSCode.
         
