@@ -67,7 +67,7 @@ engineer = AssistantAgent(
         Remember that you cannot view files that need to be viewed outside VSCode.
         
         Here is an example code snippet using FeniCS for displacement contour:
-
+        ##
         import os
         from fenics import *
         import matplotlib.pyplot as plt
@@ -172,6 +172,7 @@ engineer = AssistantAgent(
         plt.ylabel("Y (m)")
         plt.savefig(os.path.join(".", "temperature_distribution.png"))
         plt.show()
+        ##
         ''',
     llm_config=gemini_config,
     human_input_mode="NEVER",
